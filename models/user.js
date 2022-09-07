@@ -3,9 +3,9 @@
 // 3. schema는 각 주체에 대한 세부 상태(정보)를 지정해주는 것
 // 4. user모델 만들기
 
-const mongose = require('mongoose');
+const mongoose = require('mongoose');
 
-const userSchema = mongose.Schema({
+const userSchema = mongoose.Schema({
     name :{
         type : String,
         maxlength : 50
@@ -37,7 +37,7 @@ const userSchema = mongose.Schema({
     }
 })
 // model로 schema 감싸주기
-const user = mongose.model('user', userSchema);
+const User = mongoose.model('User', userSchema);
 
 // 다른 곳에서도 이 모델을 사용할 수 있게 해주기 위해 exports
-module.exports = {user};
+module.exports = {User};
