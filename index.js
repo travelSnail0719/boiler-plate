@@ -13,7 +13,8 @@ const port = 3000;
 const bodyParser = require('body-parser');
 // user모델을 가져온다.
 const {User} = require("./models/User");
-
+// 노출되면 안되는 정보가 있을 때 해당 정보를 모듈화 해서 숨겨준다.
+const config = require('./config/key');
 
 // 클라이언트에서 오는 정보들을 서버에서 분석해서 가져올 수 있게 해줌
 // application/x-www-form-urlencoded 를 분석해서 가져올 수 있게 해줌
@@ -27,7 +28,7 @@ app.use(bodyParser.json());
 // mongoose 모듈 가져오기(mongoose는 몽고DB 편하게 쓸 수 있는 tool)
 const mongoose = require('mongoose');
 // 어플리케이션과 몽고DB연결
-mongoose.connect('mongodb+srv://ycbkr0719:qlscks2!!@youtubeclone.fv3gkn5.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect(config.mongoURI, {
     // 짜잘한 에러들이 뜨지 않게 해주기 위함
     // useNewUrlParser : true
     // , useUnifiedTopology : true
