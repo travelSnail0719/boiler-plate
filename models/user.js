@@ -8,6 +8,9 @@ const bcrypt = require('bcrypt');
 // salt를 이용해서 비밀번호를 암호화 시켜주는데 이 때 암호화 10글자로 암호화를 시켜줌
 const saltRounds = 10;
 
+// jsonWebToken 모듈 가져오기
+const jwt = require('jsonwebtoken');
+
 const userSchema = mongoose.Schema({
     name :{
         type : String,
@@ -67,8 +70,42 @@ userSchema.pre('save', function(next) {
                 next();
             })
         })
+    } else{
+        next();
     }
 });
+
+userSchema.methods.comparePassword = function(plainPassword, cb) {
+    // 암호화된 DB비밀번호인 this.password와 입력된 비밀번호인 plainPassword가 일치하는지 확인하기 위해선 입력된 비밀번호를 암호화 시켜서 동일 여부 확인 해야 함.
+    bcrypt.compare(plainPassword, this.password, (err, isMatch) =>{
+        console.info(this.password)
+        if(err){
+            return cb(err);
+        } else{
+            return cb(null, isMatch);
+        }
+    });
+}
+
+userSchema.methods.generateToken = function(cb){
+    let user = this
+    // jsonWebToken을 이용해서 토큰 생성하기
+    // user._id는 DB에 들어가 있는 아이디.
+    // id와 secretToken을 이용해서 token을 만들었으므로 추후에는 secretToken을 넣으면 id를 가져올 수 있음
+    let token = jwt.sign(user._id.toHexString(), 'secretToken');
+    
+    user.token = token;
+    // 실패 시 err에 대한 정보가 index의 generateToken로 넘어가고 성공 시 user에 대한 정보가 index로 넘어간다.
+    user.save((err, user) => {
+        if(err){
+            return cb(err);  
+        } else{
+            return cb(null, user);
+        }
+    })
+
+    
+}
 
 // model로 schema 감싸주기
 const User = mongoose.model('User', userSchema);

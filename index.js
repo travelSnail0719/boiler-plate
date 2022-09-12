@@ -23,7 +23,10 @@ app.use(bodyParser.urlencoded({extended:true}));
 // application/json을 분석해서 가져올 수 있게 해줌
 app.use(bodyParser.json());
 
-
+// cookie-parser 모듈 가져오기
+const cookieParser = require('cookie-parser');
+// cookie-parser를 사용할 수 있게 해줌
+app.use(cookieParser());
 
 // mongoose 모듈 가져오기(mongoose는 몽고DB 편하게 쓸 수 있는 tool)
 const mongoose = require('mongoose');
@@ -68,6 +71,46 @@ app.post('/register', (req, res) => {
       }
     })
 });
+
+app.post('/login', (req, res) => {
+  // 1. 요청이 들어온 email을 데이터베이스에서 찾기
+  User.findOne({email : req.body.email}, (err, user) => {
+    if(!user){
+      return res.json({
+        loginSuccess : false,
+        message : "제공된 이메일에 해당하는 유저가 없습니다."
+      })
+    }
+    // 2. 요청이 들어온 email이 있다면 비밀번호 일치여부 확인.
+    // user에서 생성한 function을 사용
+    // isMatch에는 true, false가 반환
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      if(!isMatch){
+        return res.json({loginSuccess : false, message : '비밀번호가 틀렸습니다.'});
+      } else{
+         // 3. 비밀번호가 일치한다면 토큰 생성
+         // JSONWEBTOKEN라이브러리 사용
+         user.generateToken((err, user) => {
+            if(err){
+              return res.status(400).send(err);
+            } 
+            // 토큰을 저장한다.(토큰은 여러군데 저장할 수 있음(쿠키, 로컬스토리지 등에 저장 가능), 지금 넘어올 떄는 user에 들어있고, 사용을 하려면 저장을 해서 보관을 해야함)
+            // 쿠키에 저장해본다.(express에서 제공되는 cookie-parser)
+            res.cookie("x_auth", user.token)
+            .status(200)
+            .json({loginSuccess : true, userId : user._id})
+
+            
+         });
+      }
+    })
+  })
+
+  
+
+ 
+})
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!!`));
 
