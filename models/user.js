@@ -93,7 +93,7 @@ userSchema.methods.generateToken = function(cb){
     // user._id는 DB에 들어가 있는 아이디.
     // id와 secretToken을 이용해서 token을 만들었으므로 추후에는 secretToken을 넣으면 id를 가져올 수 있음
     let token = jwt.sign(user._id.toHexString(), 'secretToken');
-    
+     
     user.token = token;
     // 실패 시 err에 대한 정보가 index의 generateToken로 넘어가고 성공 시 user에 대한 정보가 index로 넘어간다.
     user.save((err, user) => {
@@ -103,8 +103,19 @@ userSchema.methods.generateToken = function(cb){
             return cb(null, user);
         }
     })
+}
 
-    
+userSchema.methods.findByToken = function(token, cb){
+    let user = this;
+    // 토큰을 decode한다.
+    jwt.verify(token, 'secretToken', function(err, decode){
+        // 유저 아이디를 이요해서 유저를 찾은 다음 클라이언트에서 가져온 토큰과 DB에 저장되어있는 토큰의 일치여부 확인
+        // findOne는 몽고DB에서 지원하는 기능
+        user.findOne({"_id" : decode, "token" : token}, function(err, user){
+            if(err) return cb(err);
+            cb(null, user);
+        })
+    })
 }
 
 // model로 schema 감싸주기

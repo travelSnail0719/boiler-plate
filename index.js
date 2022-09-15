@@ -16,6 +16,9 @@ const {User} = require("./models/User");
 // 노출되면 안되는 정보가 있을 때 해당 정보를 모듈화 해서 숨겨준다.
 const config = require('./config/key');
 
+// auth Router의 middleWare인 auth를 가져온다
+const {auth} = require("./middleWare/auth");
+
 // 클라이언트에서 오는 정보들을 서버에서 분석해서 가져올 수 있게 해줌
 // application/x-www-form-urlencoded 를 분석해서 가져올 수 있게 해줌
 app.use(bodyParser.urlencoded({extended:true}));
@@ -47,7 +50,7 @@ mongoose.connect(config.mongoURI, {
 app.get('/', (req, res) => res.send('Hello World!!!!!!!!'));
 
 // 회원가입을 할 때 사용할 router
-app.post('/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
   
   // 회원가입 할 때 필요한 정보들을 client(PostMan)에서 가져오면
   // 그것들을 DataBase에 넣어준다.
@@ -72,7 +75,7 @@ app.post('/register', (req, res) => {
     })
 });
 
-app.post('/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
   // 1. 요청이 들어온 email을 데이터베이스에서 찾기
   User.findOne({email : req.body.email}, (err, user) => {
     if(!user){
@@ -104,12 +107,26 @@ app.post('/login', (req, res) => {
          });
       }
     })
-  })
-
-  
-
- 
+  }) 
 })
+
+// auth Router 생성
+app.get('/api/users/auth', auth, (req, res) => {
+                          // 중간에 들어있는 auth는 middleWare
+                          // middleWare란 endPoint의 URL을 request로 받은 다음에 callBack function을 하기 전에 중간에서 어떠한 액션을 해주는 것.
+// 미들웨어를 실행 후 이곳까지 왔다는 말은 authentication 이 true라는 뜻
+res.status(200).json({
+    // 이렇게 아이디를 가져올 수 있는 것은 middleWare에서 req에 넣어줬기 떄문
+    _id : req.user._id,
+    isAdmin : req.user.role === 0 ? false : true,
+    isAuth : true,
+    email : req.user.email,
+    name : req.user.name,
+    lastName : req.user.lastName,
+    role : req.user.role,
+    image : req.user.image
+  })
+});
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!!`));
