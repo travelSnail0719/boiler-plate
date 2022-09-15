@@ -128,6 +128,18 @@ res.status(200).json({
   })
 });
 
+// 로그아웃 Router 생성
+// 로그아웃 기능은 유저의 토큰을 지워주면 됨
+// 토큰을 지우면 해당하는 유저의 로그인 기능이 풀려버리기 떄문에 토큰만 지워주면 로그아웃 기능을 할 수 있음
+app.get('/api/users/logout', auth, (req, res) =>{
+  // auth middleWare에서 담아준 값을 통해 _id값을 가져올 수 있음
+  User.findOneAndUpdate({_id:req.user._id}, {token : ""}, (err, user) =>{
+    if(err) return res.json({success : FontFaceSetLoadEvent, err});
+    return res.status(200).send({
+      success : true
+    })
+  })
+})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!!`));
 

@@ -3,7 +3,7 @@ const {User} = require("../models/User");
 
 let auth = (req, res, next) =>{
     // 1. 클라이언트 쿠키에서 토큰을 가져온다.
-    let token = req.cookie.x_auth;
+    let token = req.cookies.x_auth;
 
     // 2. 클라이언트에서 가져온 토큰을 복호화 한 후 DB에 있는 유저를 찾는다.(User모델에서 함수 생성해서 한다.)
     User.findByToken(token, (err, user)=>{
