@@ -11,3 +11,6 @@
 # Client
 # react npx create-react-app . .의 의미는 client 디렉토리 안에 react를 설치하겠다 라는 의미
 # webpack는 src폴더의 파일들만 관리를 하고 public부분은 관리를 하주지 않는다. => 이미지 파일등을 넣고 싶을 때는 src부분에 넣어줘야 webpack이 모아주거나 하는 역할을 할 수 있으므로 src 폴더에 넣어주는 것이 좋음
+# react-router-dom npm install react-router-dom
+# axios npm install axios --save 서버와의 비동기 통신을 위한 npm(AJAX와 같은 역할)
+# proxy npm install http-proxy-middleware --save 각기 다른 origin의 소통을 하기 위함(Cros 정책)
