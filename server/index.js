@@ -9,7 +9,7 @@ const express = require('express');
 // 함수 실행을 통해 새로운 express를 만들 수 있음
 const app = express();
 
-const port = 3000;
+const port = 4000;
 const bodyParser = require('body-parser');
 // user모델을 가져온다.
 const {User} = require("./models/User");
@@ -120,7 +120,7 @@ app.get('/api/users/auth', auth, (req, res) => {
                           // middleWare란 endPoint의 URL을 request로 받은 다음에 callBack function을 하기 전에 중간에서 어떠한 액션을 해주는 것.
 // 미들웨어를 실행 후 이곳까지 왔다는 말은 authentication 이 true라는 뜻
 res.status(200).json({
-    // 이렇게 아이디를 가져올 수 있는 것은 middleWare에서 req에 넣어줬기 떄문
+    // 이렇게 id, role, email등의 정보를 가져올 수 있는 것은 middleWare에서 req에 넣어줬기 떄문
     _id : req.user._id,
     isAdmin : req.user.role === 0 ? false : true,
     isAuth : true,
@@ -146,9 +146,4 @@ app.get('/api/users/logout', auth, (req, res) =>{
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!!`));
-
-
-
-
-
 // 6. npm install body-parser --save를 통해 body-parser 설치(해당 npm을 이용해서 클라이언트에서 보내주는 정보를 서버에서 받을 수 있게 해준다.)

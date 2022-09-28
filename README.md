@@ -14,3 +14,6 @@
 # react-router-dom npm install react-router-dom
 # axios npm install axios --save 서버와의 비동기 통신을 위한 npm(AJAX와 같은 역할)
 # proxy npm install http-proxy-middleware --save 각기 다른 origin의 소통을 하기 위함(Cros 정책)
+
+
+# concurrnetly npm install concurrently --save 서버를 기동 할 때 front서버 back서버 따로따로 기동하지 않고 한번에 기동할 수 있게 해주는 npm(root 디렉토리의 package.json에서 script->dev 사용법)
