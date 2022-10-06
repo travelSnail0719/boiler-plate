@@ -14,6 +14,10 @@
 # react-router-dom npm install react-router-dom
 # axios npm install axios --save 서버와의 비동기 통신을 위한 npm(AJAX와 같은 역할)
 # proxy npm install http-proxy-middleware --save 각기 다른 origin의 소통을 하기 위함(Cros 정책)
-
+# antd npm install --save antd CSS를 도와주는 npm
+# redux npm install redux --save
+# react-redux npm install react-redux --save
+# redux-promise npm install redux-promise --save redux의 middleware로 redux를 잘 사용할 수 있게 도와주는 역할, redux의 state를 변경하기 위해서는 action을 통해 state를 변경해야 하는데 Action은 object형식의 데이터를 받고 그 외의 형식은 받지를 못하는데 promise, function형식으로 올 때 받아줄수 있게 해주는 middleware(promise)
+# redux-thunk npm install redux-thunk --save redux의 middleware로 redux를 잘 사용할 수 있게 도와주는 역할, redux의 state를 변경하기 위해서는 action을 통해 state를 변경해야 하는데 Action은 object형식의 데이터를 받고 그 외의 형식은 받지를 못하는데, function형식으로 올 때 받아줄수 있게 해주는 middleware(function)
 
 # concurrnetly npm install concurrently --save 서버를 기동 할 때 front서버 back서버 따로따로 기동하지 않고 한번에 기동할 수 있게 해주는 npm(root 디렉토리의 package.json에서 script->dev 사용법)
