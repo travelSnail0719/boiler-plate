@@ -1,4 +1,3 @@
-import { Axios } from 'axios';
 import React, { useState } from 'react'
 // react플로우에서는 dispatch를 통해 actiond을 취하게 된다.
 import { useDispatch } from 'react-redux';
@@ -6,6 +5,7 @@ import { loginUser } from '../../../_actions/user_actions'
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage(props) {
+  // dispatch를 통해 Action을 취함(Redux의 state는 Action을 통해서만 변경이 가능하고 action은 dispatch를 통해서 사용 가능)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
