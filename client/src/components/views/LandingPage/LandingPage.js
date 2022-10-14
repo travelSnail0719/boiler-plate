@@ -1,16 +1,17 @@
 import React,{useEffect} from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Auth from '../../../hoc/auth';
 
 function LandingPage() {
-  const navigate = useNavigate();
-
   // useEffect는 LandingPage에 들어오자마자 실행시긴다는 뜻
   useEffect(() =>{
     axios.get('/api/hello')
     .then(response => {console.log(response)})
   }, [])
   
+  const navigate = useNavigate();
+
   const onClickHandler = () =>{ 
     axios.get('/api/users/logout')
       .then(response => {
@@ -39,7 +40,7 @@ function LandingPage() {
   )
 }
 
-export default LandingPage
+export default Auth(LandingPage, null);
 
 
 

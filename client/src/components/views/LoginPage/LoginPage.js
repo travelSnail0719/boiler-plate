@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../_actions/user_actions'
 import { useNavigate } from 'react-router-dom';
+import Auth from '../../../hoc/auth';
 
 function LoginPage(props) {
   // dispatch를 통해 Action을 취함(Redux의 state는 Action을 통해서만 변경이 가능하고 action은 dispatch를 통해서 사용 가능)
@@ -73,5 +74,5 @@ function LoginPage(props) {
   )
 }
 
-export default LoginPage
+export default Auth(LoginPage, false);
 
